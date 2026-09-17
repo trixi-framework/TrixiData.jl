@@ -2,9 +2,9 @@ using Documenter
 using DocumenterCodeBlocks: CodeBlocks
 using Changelog: Changelog
 using Artifacts: select_downloadable_artifacts
-# `ensure_artifact_installed` is not part of the documented API
-# of the `Artifacts` standard library since; it is part of the
-# documented `Pkg.Artifacts` API (as of Julia 1.13).
+# `ensure_artifact_installed` is not part of the documented API of the
+# `Artifacts` standard library; it is part of the documented `Pkg.Artifacts`
+# API (as of Julia 1.13).
 using Pkg.Artifacts: ensure_artifact_installed
 
 # Get TrixiData.jl root directory
