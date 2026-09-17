@@ -1,0 +1,44 @@
+name: Documentation
+
+on:
+  push:
+    branches:
+      - 'main'
+    tags: '*'
+    paths-ignore:
+      - '.zenodo.json'
+      - '.github/workflows/CI.yml'
+      - '.github/workflows/Downgrade.yml'
+      - '.github/workflows/TagBot.yml'
+  pull_request:
+    paths-ignore:
+      - '.zenodo.json'
+      - '.github/workflows/CI.yml'
+      - '.github/workflows/Downgrade.yml'
+      - '.github/workflows/TagBot.yml'
+  workflow_dispatch:
+
+# Cancel redundant CI tests automatically
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: julia-actions/setup-julia@v3
+        with:
+          version: '1'
+          show-versioninfo: true
+      - uses: julia-actions/cache@v3
+      - uses: julia-actions/julia-buildpkg@v1
+      - name: Install dependencies
+        run: |
+          julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+      - name: Build and deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # For authentication with GitHub Actions token
+          DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }} # For authentication with SSH deploy key
+        run: julia --project=docs --color=yes docs/make.jl

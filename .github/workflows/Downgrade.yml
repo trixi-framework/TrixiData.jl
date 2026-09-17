@@ -1,0 +1,85 @@
+name: Downgrade
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'AUTHORS.md'
+      - 'CITATION.bib'
+      - 'LICENSE.md'
+      - 'NEWS.md'
+      - 'README.md'
+      - 'SECURITY.md'
+      - '.zenodo.json'
+      - 'docs/**'
+  pull_request:
+    paths-ignore:
+      - 'AUTHORS.md'
+      - 'CITATION.bib'
+      - 'LICENSE.md'
+      - 'NEWS.md'
+      - 'README.md'
+      - 'SECURITY.md'
+      - '.zenodo.json'
+      - 'docs/**'
+  workflow_dispatch:
+
+# Cancel redundant CI tests automatically
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  downgrade_test:
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    name: Downgrade ${{ matrix.os }} - Julia ${{ matrix.version }} - ${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - '1.10'
+        os:
+          - ubuntu-latest
+        arch:
+          - x64
+    steps:
+      - uses: actions/checkout@v7
+      - uses: julia-actions/setup-julia@v3
+        with:
+          version: ${{ matrix.version }}
+          arch: ${{ matrix.arch }}
+      - run: julia -e 'using InteractiveUtils; versioninfo(verbose=true)'
+      - uses: julia-actions/cache@v3
+        with:
+          # Do not save cache files when the job failed. We have observed several
+          # failing CI jobs likely due to corrupted caches. In this case, we must
+          # not save the corrupted files to the cache, which would lead to the same
+          # issues again in the next run.
+          save-always: 'false'
+      - uses: julia-actions/julia-downgrade-compat@v2
+        with:
+          skip: Artifacts,LazyArtifacts,SHA,Test
+          projects: ., test
+          mode: forcedeps
+      # We run the tests manually instead of using julia-action/julia-buildpkg and
+      # julia-action/julia-runtest or `Pkg.test` because otherwise the downgraded
+      # Manifest.toml is not used in the tests under Julia < v1.12, see also
+      # https://github.com/julia-actions/julia-downgrade-compat/blob/00f940b7be2b50389571ed016d603be561649103/README.md#L89
+      - name: Run tests
+        run: |
+          julia --project=test --color=yes -e '
+            import Pkg
+            Pkg.develop(Pkg.PackageSpec(path=pwd()))
+            Pkg.instantiate()
+            Pkg.status(; mode = Pkg.PKGMODE_MANIFEST)
+            include("test/runtests.jl")
+          '
+        env:
+          # For authenticated downloads without strict rate limits
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
