@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-    tags: ['*']
+    tags: ['v*']
     paths-ignore:
       - 'AUTHORS.md'
       - 'CITATION.bib'
@@ -41,6 +41,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  artifact-download:
+    name: Artifact download - clean depot
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: julia-actions/setup-julia@v3
+        with:
+          version: '1.10'
+      - name: Download and verify artifact in a clean depot
+        env:
+          JULIA_DEPOT_PATH: ${{ runner.temp }}/trixidata-clean-depot
+        run: |
+          julia --project=. --startup-file=no --color=yes -e '
+            using SHA: sha256
+            using TrixiData
+
+            mesh_file = mesh_tandem_spheres_hex_p2()
+            isfile(mesh_file) || error("Mesh artifact was not downloaded")
+            bytes2hex(open(sha256, mesh_file)) ==
+                "2db6b8d583fc139120fd8a2d4c5d2fa4610f74b7f0e7c2372c6cecbe15884d5e" ||
+                error("Downloaded mesh has an unexpected checksum")
+          '
+
   test:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
     name: ${{ matrix.os }} - Julia ${{ matrix.version }} - ${{ matrix.arch }}

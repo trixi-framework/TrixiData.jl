@@ -1,6 +1,11 @@
 using Documenter
 using DocumenterCodeBlocks: CodeBlocks
 using Changelog: Changelog
+using Artifacts: select_downloadable_artifacts
+# `ensure_artifact_installed` is not part of the documented API
+# of the `Artifacts` standard library since; it is part of the
+# documented `Pkg.Artifacts` API (as of Julia 1.13).
+using Pkg.Artifacts: ensure_artifact_installed
 
 # Get TrixiData.jl root directory
 trixidata_root_dir = dirname(@__DIR__)
@@ -12,6 +17,20 @@ if (get(ENV, "CI", nothing) != "true") &&
 end
 
 using TrixiData
+
+# Install all (lazy) artifacts of TrixiData.jl before building the documentation.
+# Otherwise, the progress information that Julia prints while downloading an
+# artifact would end up in the captured output of the doctests using it and let
+# them fail. This is the snippet recommended in the docstring of the deprecated
+# `Pkg.Artifacts.ensure_all_artifacts_installed`; going through
+# `select_downloadable_artifacts` keeps this working automatically when new data
+# sets are added and skips artifacts that are not available for this platform.
+let artifacts_toml = joinpath(trixidata_root_dir, "Artifacts.toml")
+    artifacts = select_downloadable_artifacts(artifacts_toml; include_lazy = true)
+    for name in keys(artifacts)
+        ensure_artifact_installed(name, artifacts[name], artifacts_toml)
+    end
+end
 
 # Define module-wide setups such that the respective modules are available in doctests
 DocMeta.setdocmeta!(TrixiData, :DocTestSetup, :(using TrixiData); recursive = true)
@@ -76,6 +95,7 @@ makedocs(modules = [TrixiData],
          pages = [
              "Home" => "index.md",
              "API reference" => "reference.md",
+             "Development" => "development.md",
              "Changelog" => "changelog.md",
              "Authors" => "authors.md",
              "License" => "license.md"
