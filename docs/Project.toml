@@ -14,3 +14,9 @@ DocumenterCodeBlocks = "1.0"
 Pkg = "1"
 Trixi = "0.17"
 julia = "1.10"
+
+[extras]
+HostCPUFeatures = "3e5b6fbb-0976-4d2c-9146-d79de83f2fb0"
+
+[preferences.HostCPUFeatures]
+allow_runtime_invalidation = true
