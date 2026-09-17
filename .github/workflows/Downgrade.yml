@@ -62,6 +62,9 @@ jobs:
           # not save the corrupted files to the cache, which would lead to the same
           # issues again in the next run.
           save-always: 'false'
+          # Really download the data sets instead of restoring them from a cache,
+          # see the comment in CI.yml.
+          cache-artifacts: 'false'
       - uses: julia-actions/julia-downgrade-compat@v2
         with:
           skip: Artifacts,LazyArtifacts,SHA,Test

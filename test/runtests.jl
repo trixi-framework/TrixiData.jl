@@ -7,6 +7,8 @@ using TestItemRunner
 # `TRIXIDATA_TEST=quality` runs the tests that work without network access.
 # By default (`TRIXIDATA_TEST=all`), all test items are run.
 const TRIXIDATA_TEST = get(ENV, "TRIXIDATA_TEST", "all")
+TRIXIDATA_TEST in ("all", "quality", "artifacts") ||
+    error("Invalid TRIXIDATA_TEST=$(repr(TRIXIDATA_TEST)); expected all, quality, or artifacts")
 
 # With `TRIXIDATA_TEST_VERBOSE=true`, `@run_package_tests` prints every
 # `@testitem` (together with its run time) in the final test summary instead of
