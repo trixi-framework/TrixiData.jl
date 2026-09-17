@@ -37,10 +37,10 @@ julia> Trixi.ncells(mesh)
 31616
 ```
 
-The mesh file is provided as a lazy Julia artifact of roughly 24 MB. It is
-downloaded the first time this function is called and cached in the Julia depot
-afterwards. The returned path points into the read-only artifact store; copy the
-file elsewhere if you need to modify it.
+The mesh file is provided as a lazy Julia artifact. It is downloaded the first
+time this function is called - roughly 9 MB of download, 24 MB once unpacked -
+and cached in the Julia depot afterwards. The returned path points into the
+read-only artifact store; copy the file elsewhere if you need to modify it.
 
 # Source and license
 

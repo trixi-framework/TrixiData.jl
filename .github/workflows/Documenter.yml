@@ -6,13 +6,11 @@ on:
       - 'main'
     tags: 'v*'
     paths-ignore:
-      - '.zenodo.json'
       - '.github/workflows/CI.yml'
       - '.github/workflows/Downgrade.yml'
       - '.github/workflows/TagBot.yml'
   pull_request:
     paths-ignore:
-      - '.zenodo.json'
       - '.github/workflows/CI.yml'
       - '.github/workflows/Downgrade.yml'
       - '.github/workflows/TagBot.yml'

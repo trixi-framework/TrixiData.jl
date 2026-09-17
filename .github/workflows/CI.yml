@@ -7,24 +7,20 @@ on:
     tags: ['v*']
     paths-ignore:
       - 'AUTHORS.md'
-      - 'CITATION.bib'
       - 'LICENSE.md'
       - 'NEWS.md'
       - 'README.md'
       - 'SECURITY.md'
-      - '.zenodo.json'
       - '.github/workflows/SpellCheck.yml'
       - '.github/workflows/TagBot.yml'
       - 'docs/**'
   pull_request:
     paths-ignore:
       - 'AUTHORS.md'
-      - 'CITATION.bib'
       - 'LICENSE.md'
       - 'NEWS.md'
       - 'README.md'
       - 'SECURITY.md'
-      - '.zenodo.json'
       - '.github/workflows/SpellCheck.yml'
       - '.github/workflows/TagBot.yml'
       - 'docs/**'
@@ -82,9 +78,6 @@ jobs:
         uses: julia-actions/julia-runtest@v1
         with:
           coverage: true
-        env:
-          # For authenticated downloads without strict rate limits
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: julia-actions/julia-processcoverage@v1
         if: ${{ !cancelled() }}
         with:
@@ -111,7 +104,9 @@ jobs:
 
   finish:
     needs: test
-    if: ${{ !cancelled() }}
+    # Close the parallel Coveralls build whenever the tests actually ran - also
+    # when they failed, but not when they were skipped or cancelled.
+    if: ${{ !cancelled() && needs.test.result != 'skipped' }}
     runs-on: ubuntu-latest
     steps:
       - name: Coveralls Finished

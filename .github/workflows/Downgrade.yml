@@ -6,22 +6,18 @@ on:
       - main
     paths-ignore:
       - 'AUTHORS.md'
-      - 'CITATION.bib'
       - 'LICENSE.md'
       - 'NEWS.md'
       - 'README.md'
       - 'SECURITY.md'
-      - '.zenodo.json'
       - 'docs/**'
   pull_request:
     paths-ignore:
       - 'AUTHORS.md'
-      - 'CITATION.bib'
       - 'LICENSE.md'
       - 'NEWS.md'
       - 'README.md'
       - 'SECURITY.md'
-      - '.zenodo.json'
       - 'docs/**'
   workflow_dispatch:
 
@@ -83,6 +79,3 @@ jobs:
             Pkg.status(; mode = Pkg.PKGMODE_MANIFEST)
             include("test/runtests.jl")
           '
-        env:
-          # For authenticated downloads without strict rate limits
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

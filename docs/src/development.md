@@ -169,10 +169,12 @@ Two properties of the module must be preserved:
 
 ### 6. Add a test
 
-Add a `@testitem` tagged `:artifacts` in a file `test/test_<name>.jl` that
-downloads the data set and checks its content against the checksum of the
-*original* file - not of the tarball. This verifies the whole chain from the
-original publication to the accessor function.
+Add a `@testitem` tagged `:artifacts` that downloads the data set and checks its
+content against the checksum of the *original* file - not of the tarball. This
+verifies the whole chain from the original publication to the accessor function.
+Test items are grouped by kind of data, so a new mesh belongs in
+`test/test_meshes.jl`; start a new file `test/test_<kind>.jl` only for a kind of
+data that does not fit into an existing one.
 
 ```julia
 @testitem "mesh_tandem_spheres_hex_p2" tags=[:artifacts] begin
@@ -200,9 +202,17 @@ source of the data, including its DOI and license.
 
 ## Verifying the download
 
-Julia reuses an artifact that is already present in the depot, so a local test
-run does not prove that the URL in `Artifacts.toml` actually works. Force a real
-download by pointing `JULIA_DEPOT_PATH` at an empty directory:
+Julia reuses an artifact that is already present in the depot, so a test run does
+not prove that the URL in `Artifacts.toml` actually works.
+
+In CI, this is taken care of automatically: the workflows pass
+`cache-artifacts: 'false'` to `julia-actions/cache`, so the `artifacts`
+directory of the depot is neither restored from nor written to the cache. Every
+CI run therefore really downloads every data set, and a broken URL or an
+outdated checksum shows up as a failing test.
+
+Locally, force a real download by pointing `JULIA_DEPOT_PATH` at an empty
+directory:
 
 ```shell
 JULIA_DEPOT_PATH=$(mktemp -d) julia --project=. -e 'using TrixiData; @show mesh_tandem_spheres_hex_p2()'
