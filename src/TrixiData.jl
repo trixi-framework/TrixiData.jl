@@ -25,7 +25,7 @@ volume. Hence, the mesh can be used with
 [Trixi.jl](https://github.com/trixi-framework/Trixi.jl) as
 
 ```jldoctest
-julia> using Trixi
+julia> using Trixi, TrixiData
 
 julia> mesh = P4estMesh{3}(mesh_tandem_spheres_hex_p2();
                            boundary_symbols = [:FrontSphere, :BackSphere, :FarField]);
