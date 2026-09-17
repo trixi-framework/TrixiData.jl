@@ -1,0 +1,20 @@
+# Mesh of two tandem spheres, discretized with quadratic (P2) hexahedral
+# elements; see `mesh_tandem_spheres_hex_p2` in src/TrixiData.jl.
+#
+# Original data set (single file `TandemSpheresHexMesh1P2_fixed.inp`, CC BY 4.0):
+#   Daniel Doehring: Mesh Tandem Spheres Hexahedra P2 Fixed.
+#   Zenodo, 2026. https://doi.org/10.5281/zenodo.18921889
+# Julia artifacts can only be downloaded as (compressed) tarballs, while Zenodo
+# serves the bare mesh file. Hence, the unmodified file is repackaged as a
+# `.tar.gz` archive and attached to a GitHub release of TrixiData.jl; the
+# tarball can be recreated bit-for-bit via
+#   julia> using Tar; Tar.create(dir, "TandemSpheresHexMesh1P2_fixed.tar")
+#   $ gzip -9 -n TandemSpheresHexMesh1P2_fixed.tar
+# where `dir` contains only the file downloaded from Zenodo.
+[mesh_tandem_spheres_hex_p2]
+git-tree-sha1 = "a7db536cdc5eb3c01369302db6e0ed78cd460d3b"
+lazy = true
+
+    [[mesh_tandem_spheres_hex_p2.download]]
+    sha256 = "451f1410da26d79c70a63c0d8ec22f78a62549eb35e009261f4a6e6bf8763162"
+    url = "https://github.com/trixi-framework/TrixiData.jl/releases/download/data-mesh_tandem_spheres_hex_p2/TandemSpheresHexMesh1P2_fixed.tar.gz"
