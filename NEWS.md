@@ -22,6 +22,13 @@ accessor function - or removing such a function - is a breaking change.
 
 #### Added
 
+- `mesh_gingerbread_man` returns the path to a two-dimensional mesh of a
+  gingerbread man in HOHQMesh's ISM-V2 format, consisting of 903 curved
+  quadrilateral elements with boundary curves of polynomial degree six.
+  The mesh is distributed as a lazy artifact and is taken from
+  [this gist](https://gist.github.com/andrewwinters5000/2c6440b5f8a57db131061ad7aa78ee2b)
+  (Andrew R. Winters, MIT). Its artifact also contains the control file, a Julia
+  environment, and a script to recreate the mesh.
 - `mesh_tandem_spheres_hex_p2` returns the path to a mesh of the tandem spheres
   configuration (case CS1 of the High-Order CFD Workshop) in Abaqus format,
   consisting of 31,616 curved hexahedral elements of polynomial degree two.
