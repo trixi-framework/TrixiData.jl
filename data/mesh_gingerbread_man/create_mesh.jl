@@ -49,6 +49,22 @@ const CONTROL_FILE = joinpath(@__DIR__, "mesh_gingerbread_man.control")
 # the chain `Eye2`.
 const CHANGED_CONTROL_FILE_LINES = [4, 5, 6, 7, 179]
 
+# In the ISM-V2 format, the header, the edge and element connectivity, and the
+# boundary flags are written as integers while the coordinates are written in
+# floating point; the two never appear in the same line. Integers therefore
+# describe the structure of the mesh and have to match exactly, while
+# coordinates may differ by round-off.
+const INTEGER_TOKEN = r"^[+-]?\d+$"
+
+# The published mesh was produced years ago by a Fortran program built with
+# another compiler on another machine, so its coordinates differ from the ones
+# regenerated here in the last digits; the largest relative difference observed
+# is 7e-16. The tolerances below leave room for the round-off of a different
+# compiler while staying far below any genuine difference between two meshes,
+# whose coordinates differ in the leading digits.
+const COORDINATE_RTOL = 1.0e-10
+const COORDINATE_ATOL = 1.0e-10
+
 # Fortran compiler; `-cpp -O` (the default `FFLAGS` of the historical makefile)
 # must work with it.
 const FC = get(ENV, "FC", "gfortran")
@@ -179,43 +195,68 @@ end
 """
     compare_with_published(mesh_file, published_file)
 
-Compare `mesh_file` to `published_file` token by token, treating tokens that
-parse as numbers as numbers, and report how far the two files are apart.
+Compare `mesh_file` to `published_file` token by token and report how far the
+two are apart. The two count as equal, and `true` is returned, only if
+
+  - they have the same number of lines and the same number of tokens per line,
+  - all tokens that are not coordinates are identical, so that the header, the
+    connectivity, and the boundary names have to match exactly,
+  - and every coordinate is finite in both files and equal to its counterpart
+    within `COORDINATE_RTOL` and `COORDINATE_ATOL`.
 """
 function compare_with_published(mesh_file, published_file)
     mesh = readlines(mesh_file)
-    reference = readlines(published_file)
+    published = readlines(published_file)
 
-    if length(mesh) != length(reference)
-        @error "Different number of lines" length(mesh) length(reference)
+    if length(mesh) != length(published)
+        @error "Different number of lines" length(mesh) length(published)
         return false
     end
 
     differing_lines = 0
-    nonnumeric_differences = 0
+    differing_integers = 0
+    differing_nonnumeric = 0
+    nonfinite_coordinates = 0
+    coordinates_out_of_tolerance = 0
     maximum_relative_difference = 0.0
-    for (line, (a, b)) in enumerate(zip(mesh, reference))
+    for (line, (a, b)) in enumerate(zip(mesh, published))
         a == b && continue
         differing_lines += 1
 
         tokens_a = split(a)
         tokens_b = split(b)
         if length(tokens_a) != length(tokens_b)
-            nonnumeric_differences += 1
-            @error "Different number of tokens in a line" line a b
+            differing_nonnumeric += 1
+            @error "Different number of tokens in a line" line a b maxlog=10
             continue
         end
 
         for (ta, tb) in zip(tokens_a, tokens_b)
             ta == tb && continue
+
+            # Anything that is written as an integer describes the structure of
+            # the mesh, not a coordinate, and may not differ at all.
+            if occursin(INTEGER_TOKEN, ta) || occursin(INTEGER_TOKEN, tb)
+                differing_integers += 1
+                @error "Integer token differs" line ta tb maxlog=10
+                continue
+            end
+
             # Fortran may write `D` instead of `E` for the exponent
             x = tryparse(Float64, replace(ta, 'D' => 'E', 'd' => 'e'))
             y = tryparse(Float64, replace(tb, 'D' => 'E', 'd' => 'e'))
             if x === nothing || y === nothing
-                nonnumeric_differences += 1
-                @error "Non-numeric difference in a line" line ta tb
+                differing_nonnumeric += 1
+                @error "Non-numeric token differs" line ta tb maxlog=10
                 continue
             end
+
+            if !isfinite(x) || !isfinite(y)
+                nonfinite_coordinates += 1
+                @error "Coordinate is not finite" line ta tb maxlog=10
+                continue
+            end
+
             # Both tokens can be zero while their spelling differs, e.g. `0.0`
             # and `-0.0`; without the guard that would give `NaN` here and `NaN`
             # would then swallow the maximum below.
@@ -223,17 +264,27 @@ function compare_with_published(mesh_file, published_file)
             relative_difference = iszero(scale) ? zero(scale) : abs(x - y) / scale
             maximum_relative_difference = max(maximum_relative_difference,
                                               relative_difference)
+
+            if !isapprox(x, y; rtol = COORDINATE_RTOL, atol = COORDINATE_ATOL)
+                coordinates_out_of_tolerance += 1
+                @error "Coordinate outside of the tolerance" line ta tb maxlog=10
+                continue
+            end
         end
     end
 
     @printf("\n")
     @printf("Comparison with the published mesh\n")
-    @printf("  number of lines                %6d\n", length(reference))
+    @printf("  number of lines                %6d\n", length(published))
     @printf("  lines that differ              %6d\n", differing_lines)
-    @printf("  non-numeric differences        %6d\n", nonnumeric_differences)
+    @printf("  integer tokens that differ     %6d\n", differing_integers)
+    @printf("  non-numeric tokens that differ %6d\n", differing_nonnumeric)
+    @printf("  coordinates that are not finite%6d\n", nonfinite_coordinates)
+    @printf("  coordinates out of tolerance   %6d\n", coordinates_out_of_tolerance)
     @printf("  maximum relative difference   %.3e\n", maximum_relative_difference)
 
-    return nonnumeric_differences == 0
+    return differing_integers == 0 && differing_nonnumeric == 0 &&
+           nonfinite_coordinates == 0 && coordinates_out_of_tolerance == 0
 end
 
 """

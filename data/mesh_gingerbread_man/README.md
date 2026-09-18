@@ -62,7 +62,7 @@ generator, end up in the subdirectory `run/`; delete it to start from scratch.
    ```
 
 6. Compare the regenerated mesh to the published one. The script stops if the
-   two differ in anything but the value of a coordinate.
+   two differ in anything but the last digits of a coordinate.
 
 7. Generate a mesh from the same control file with the HOHQMesh.jl version
    installed in this environment and print its size, so that the statement in
@@ -84,15 +84,21 @@ Regenerated mesh file
 Comparison with the published mesh
   number of lines                  8089
   lines that differ                 113
-  non-numeric differences             0
+  integer tokens that differ          0
+  non-numeric tokens that differ      0
+  coordinates that are not finite     0
+  coordinates out of tolerance        0
   maximum relative difference   6.809e-16
 ```
 
 The `sha256` of the regenerated mesh depends on the machine and is expected to
-differ from the one of the published file. The two agree in the format marker
-(`ISM-V2`), the header (1067 nodes, 1973 edges, 903 elements, polynomial
-degree 6), the element connectivity, and all boundary names, and their
-coordinates agree well within tolerances close to the precision of `Float64`.
+differ from the one of the published file. The comparison is what decides
+whether the published file was reproduced, and it is strict: the two files have
+to agree in the number of lines and in every token that is not a coordinate -
+the format marker (`ISM-V2`), the header (1067 nodes, 1973 edges, 903 elements,
+polynomial degree 6), the element connectivity, and all boundary names - and
+every coordinate has to be finite and to agree within the tolerances given in
+`create_mesh.jl`. Only the last digits of the coordinates may differ.
 
 
 ## Source and license
