@@ -6,13 +6,12 @@ on:
   push:
     branches:
       - 'main'
-    paths: &paths
+    paths:
       - '.github/workflows/Whitespace.yml'
       - '**.jl'
       - '**.md'
       - '**.sh'
   pull_request:
-    paths: *paths
 
 jobs:
   whitespace:
