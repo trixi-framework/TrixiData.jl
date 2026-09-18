@@ -10,15 +10,16 @@ on:
       - 'NEWS.md'
       - 'README.md'
       - 'SECURITY.md'
+      - '.github/dependabot.yml'
+      - '.github/workflows/CI.yml'
+      - '.github/workflows/Documenter.yml'
+      - '.github/workflows/FormatCheck.yml'
+      - '.github/workflows/Invalidations.yml'
+      - '.github/workflows/SpellCheck.yml'
+      - '.github/workflows/TagBot.yml'
+      - '.github/workflows/Whitespace.yml'
       - 'docs/**'
   pull_request:
-    paths-ignore:
-      - 'AUTHORS.md'
-      - 'LICENSE.md'
-      - 'NEWS.md'
-      - 'README.md'
-      - 'SECURITY.md'
-      - 'docs/**'
   workflow_dispatch:
 
 # Cancel redundant CI tests automatically
