@@ -6,7 +6,102 @@ using Artifacts: @artifact_str
 # https://pkgdocs.julialang.org/v1/artifacts/#Using-Artifacts
 using LazyArtifacts: LazyArtifacts
 
+export mesh_gingerbread_man
 export mesh_tandem_spheres_hex_p2
+
+"""
+    mesh_gingerbread_man()
+
+Return the path to a two-dimensional mesh of a gingerbread man. It is the
+example `GingerbreadMan` of the mesh generator
+[HOHQMesh](https://github.com/trixi-framework/HOHQMesh) and is mostly used to
+demonstrate and test curved unstructured meshes: the outer boundary `Body` is a
+spline, the inner boundaries `Button1`, `Button2`, `Eye1`, `Eye2`, `Smile`, and
+`Bowtie` are given by parametric equations.
+
+The mesh is given in HOHQMesh's ISM-V2 format (`.mesh`) and consists of 1,067
+nodes, 1,973 edges, and 903 curved quadrilateral elements with boundary curves
+of polynomial degree six. Hence, the mesh can be used with
+[Trixi.jl](https://github.com/trixi-framework/Trixi.jl) as
+
+```jldoctest
+julia> using Trixi, TrixiData
+
+julia> mesh = UnstructuredMesh2D(mesh_gingerbread_man());
+
+julia> ndims(mesh)
+2
+
+julia> mesh.n_elements
+903
+
+julia> sort(unique(mesh.boundary_names))
+8-element Vector{Symbol}:
+ Symbol("---")
+ :Body
+ :Bowtie
+ :Button1
+ :Button2
+ :Eye1
+ :Eye2
+ :Smile
+```
+
+The name `---` marks the element sides that are not on a boundary.
+
+The mesh file is provided as a lazy Julia artifact. It is downloaded the first
+time this function is called - roughly 110 KB of download, 520 KB once
+unpacked - and cached in the Julia depot afterwards. The returned path points
+into the read-only artifact store; copy the file elsewhere if you need to
+modify it.
+
+The artifact does not only contain the mesh file but also everything needed
+to recreate it: the control file it was generated from, a Julia environment,
+and a script that regenerates the mesh and verifies it against the distributed
+file. These files live next to the mesh file, so they can be found via
+
+```jldoctest
+julia> using TrixiData
+
+julia> sort(readdir(dirname(mesh_gingerbread_man())))
+7-element Vector{String}:
+ "LICENSE.md"
+ "Manifest.toml"
+ "Project.toml"
+ "README.md"
+ "create_mesh.jl"
+ "mesh_gingerbread_man.control"
+ "mesh_gingerbread_man.mesh"
+```
+
+`README.md` documents how the mesh is recreated and how far a regenerated mesh
+is from the distributed one.
+
+# Source and license
+
+The mesh file `mesh_gingerbread_man.mesh` is redistributed unmodified from
+
+> Andrew R. Winters (2021).
+> Gingerbread man mesh.
+> [Gist](https://gist.github.com/andrewwinters5000/2c6440b5f8a57db131061ad7aa78ee2b)
+
+It is the output of HOHQMesh applied to the control file of the example
+`GingerbreadMan` shipped with
+[HOHQMesh.jl](https://github.com/trixi-framework/HOHQMesh.jl). Both the mesh
+generator and that control file are licensed under the MIT license (Copyright
+(c) 2010-present David A. Kopriva and other contributors); a copy of the license
+is distributed with the mesh as `LICENSE.md`. If you use this mesh, please cite
+
+> David A. Kopriva, Andrew R. Winters, Michael Schlottke-Lakemper,
+> Joseph A. Schoonover, Hendrik Ranocha (2024).
+> HOHQMesh: An All Quadrilateral/Hexahedral Unstructured Mesh Generator for High
+> Order Elements.
+> Journal of Open Source Software 9(104), 7476.
+> [DOI: 10.21105/joss.07476](https://doi.org/10.21105/joss.07476)
+"""
+function mesh_gingerbread_man()
+    return joinpath(artifact"mesh_gingerbread_man", "mesh_gingerbread_man.mesh")
+end
 
 """
     mesh_tandem_spheres_hex_p2()
