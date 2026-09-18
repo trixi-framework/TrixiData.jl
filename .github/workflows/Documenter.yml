@@ -6,14 +6,15 @@ on:
       - 'main'
     tags: 'v*'
     paths-ignore:
+      - '.github/dependabot.yml'
       - '.github/workflows/CI.yml'
       - '.github/workflows/Downgrade.yml'
+      - '.github/workflows/FormatCheck.yml'
+      - '.github/workflows/Invalidations.yml'
+      - '.github/workflows/SpellCheck.yml'
       - '.github/workflows/TagBot.yml'
+      - '.github/workflows/Whitespace.yml'
   pull_request:
-    paths-ignore:
-      - '.github/workflows/CI.yml'
-      - '.github/workflows/Downgrade.yml'
-      - '.github/workflows/TagBot.yml'
   workflow_dispatch:
 
 # Cancel redundant CI tests automatically
