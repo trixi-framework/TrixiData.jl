@@ -85,6 +85,14 @@ println("tarball       = ", tarball * ".gz")
 
 Keep the two printed hashes; they go into `Artifacts.toml` in step 4.
 
+An artifact may contain more than the data itself, for example the license of
+the source and a `README.md` describing the data set and naming the sources to
+cite. Everything that goes into an artifact is collected in
+`data/<artifact name>/` of this repository. The small accompanying files are
+tracked there, so that the tarball can be recreated; the data files themselves
+are not, since they are downloaded from their original source and would only
+bloat the repository (see the corresponding patterns in `.gitignore`).
+
 ### 3. Publish the tarball as a GitHub release asset
 
 Attach the `.tar.gz` to a release of TrixiData.jl. Use a tag of the form
@@ -152,6 +160,10 @@ end
 The docstring is the only place where users learn where a data set comes from
 and under which conditions they may use it, so please be explicit there.
 
+Data sets are listed in alphabetical order in `src/TrixiData.jl`, in
+`Artifacts.toml`, and in the tests, so insert the new one at the matching
+position instead of appending it.
+
 A docstring may contain a doctest that accesses the data set; nothing special is
 required for that. `docs/make.jl` installs every artifact declared in
 `Artifacts.toml` before `makedocs` runs, so the progress information that `Pkg`
@@ -174,7 +186,9 @@ content against the checksum of the *original* file - not of the tarball. This
 verifies the whole chain from the original publication to the accessor function.
 Test items are grouped by kind of data, so a new mesh belongs in
 `test/test_meshes.jl`; start a new file `test/test_<kind>.jl` only for a kind of
-data that does not fit into an existing one.
+data that does not fit into an existing one. If the artifact contains further
+files - for example the license of the source repository - check that they are
+there as well.
 
 ```julia
 @testitem "mesh_tandem_spheres_hex_p2" tags=[:artifacts] begin

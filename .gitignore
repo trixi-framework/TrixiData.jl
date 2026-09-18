@@ -14,5 +14,7 @@ coverage_report/
 *.claude
 
 run*/
+**/*.mesh
+**/*.inp
 
 LocalPreferences.toml
