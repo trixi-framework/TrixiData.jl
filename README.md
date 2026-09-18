@@ -9,7 +9,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-success.svg)](https://opensource.org/license/mit/)
 
 [TrixiData.jl](https://github.com/trixi-framework/TrixiData.jl)
-distributes data files - meshes, reference solutions, and similar - used by
+distributes data files - meshes for now - used by
 packages of the [Trixi Framework](https://github.com/trixi-framework),
 in particular in tests, examples, and documentation.
 
