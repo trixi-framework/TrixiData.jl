@@ -67,14 +67,14 @@ Such a directory contains
   expect,
 - the input files, such as the control file of a mesh generator, kept as close
   to their origin as possible,
-- a Julia environment, i.e. a `Project.toml` with exact `[compat]` bounds. Track
+- a Julia environment, i.e., a `Project.toml` with exact `[compat]` bounds. Track
   the `Manifest.toml` as well, even though `**/Manifest.toml` is ignored
   repository wide: add it with `git add -f`, so that the environment can be
   instantiated exactly as it was when the data set was created,
 - a script that runs the whole thing, checks its result against the
   distributed file, and fails if they do not match,
-- and a `LICENSE.md` that states the license of the original data and of any
-  modifications applied to it.
+- and a `LICENSE`/`LICENSE.md` that states the license of the original data and
+  of any modifications applied to it.
 
 Keep the directory free of generated output: data files are ignored repository
 wide and are distributed as artifacts, and downloads, build products, and other
