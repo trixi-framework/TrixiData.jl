@@ -33,8 +33,7 @@ The mesh is given in Abaqus format (`.inp`) and consists of 306,503 nodes and
 lower and upper wing surface, respectively. The airfoil sections are symmetric
 and the trailing edge is closed, so `BottomWing` and `TopWing` share the 139
 nodes at which the lower and the upper surface meet. Hence, the mesh can be
-used with
-[Trixi.jl](https://github.com/trixi-framework/Trixi.jl) as
+used with [Trixi.jl](https://github.com/trixi-framework/Trixi.jl) as
 
 ```jldoctest
 julia> using Trixi, TrixiData
