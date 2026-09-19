@@ -82,15 +82,17 @@ When you use this mesh, please cite all the sources that it builds upon:
 
 1. V. Schmitt, F. Charpin (1979).
    Pressure distributions on the ONERA-M6 wing at transonic Mach numbers.
-   Advisory Report AR-138, AGARD.
-   Experimental Data Base for Computer Program Assessment.
+   Chapter B1 of "Experimental Data Base for Computer Program Assessment.
+   Report of the Fluid Dynamics Panel Working Group 04",
+   Advisory Report AR-138, AGARD, May 1979.
 2. J. W. Slater (2002).
-   ONERA M6 Wing: Study #1: Demonstrate computation for a 3D wing flow.
-   Technical Report, NASA John H. Glenn Research Center.
-   <https://www.grc.nasa.gov/www/wind/valid/m6wing/m6wing.html>
+   ONERA M6 Wing: Study #1.
+   NPARC Alliance Validation Archive, NASA John H. Glenn Research Center.
+   Example study demonstrating the computation of a 3D transonic wing flow.
+   <https://www.grc.nasa.gov/WWW/wind/valid/m6wing/m6wing01/m6wing01.html>
 3. J. A. Heyns, O. F. Oxtoby, A. Steenkamp (2014).
    Modelling high-speed flow using a matrix-free coupled solver.
-   Proceedings of the 9th OpenFOAM Workshop, Zagreb, Croatia, pp. 23-26.
+   9th OpenFOAM Workshop, 23-26 June 2014, Zagreb, Croatia.
 4. C. Geuzaine, J.-F. Remacle (2009).
    Gmsh: A 3-D finite element mesh generator with built-in pre- and
    post-processing facilities.
@@ -99,14 +101,14 @@ When you use this mesh, please cite all the sources that it builds upon:
 5. D. Doehring, H. Ranocha, M. Torrilhon (2025).
    Paired Explicit Relaxation Runge-Kutta Methods: Entropy-Conservative and
    Entropy-Stable High-Order Optimized Multirate Time Integration.
-   [arXiv: 2507.04991](https://arxiv.org/abs/2507.04991)
+   [DOI: 10.48550/arXiv.2507.04991](https://doi.org/10.48550/arXiv.2507.04991)
 6. D. Doehring, H. Ranocha, M. Torrilhon (2025).
    Reproducibility repository for "Paired Explicit Relaxation Runge-Kutta
    Methods: Entropy-Conservative and Entropy-Stable High-Order Optimized
    Multirate Time Integration".
    [DOI: 10.5281/zenodo.15601890](https://doi.org/10.5281/zenodo.15601890)
 
-The corresponding BibTeX entries are
+The corresponding BibLaTeX entries are
 
 ```bibtex
 @techreport{schmitt1979pressure,
@@ -114,27 +116,34 @@ The corresponding BibTeX entries are
          {M}ach numbers},
   author={Schmitt, V. and Charpin, F.},
   institution={AGARD},
-  number={Advisory Report AR-138},
+  type={Advisory Report},
+  number={AR-138},
   year={1979},
-  note={Experimental Data Base for Computer Program Assessment}
+  month={05},
+  note={Chapter B1 of "Experimental Data Base for Computer Program
+        Assessment. Report of the Fluid Dynamics Panel Working Group 04"}
 }
 
-@techreport{slater2002onera,
-  title={{ONERA} {M6} Wing: Study \#1: Demonstrate computation for a
-         3{D} wing flow},
-  author={Slater, J. W.},
-  institution={NASA John H. Glenn Research Center},
+@misc{slater2002onera,
+  title={{ONERA} {M6} Wing: Study \#1},
+  author={Slater, John W.},
   year={2002},
-  url={https://www.grc.nasa.gov/www/wind/valid/m6wing/m6wing.html}
+  month={08},
+  howpublished={\url{https://www.grc.nasa.gov/WWW/wind/valid/m6wing/m6wing01/m6wing01.html}},
+  note={NPARC Alliance Validation Archive,
+        NASA John H. Glenn Research Center.
+        Example study demonstrating the computation of a
+        3{D} transonic wing flow}
 }
 
 @inproceedings{heyns2014modelling,
   title={Modelling high-speed flow using a matrix-free coupled solver},
-  author={Heyns, J. A. and Oxtoby, O. F. and Steenkamp, A.},
-  booktitle={Proceedings of the 9th OpenFOAM Workshop},
+  author={Heyns, Johan A. and Oxtoby, Oliver F. and Steenkamp, Adriaan},
+  booktitle={9th OpenFOAM Workshop},
   address={Zagreb, Croatia},
-  pages={23--26},
-  year={2014}
+  year={2014},
+  month={06},
+  note={23--26 June 2014}
 }
 
 @article{geuzaine2009gmsh,
@@ -158,7 +167,8 @@ The corresponding BibTeX entries are
   month={07},
   eprint={2507.04991},
   eprinttype={arxiv},
-  eprintclass={math.NA}
+  eprintclass={math.NA},
+  doi={10.48550/arXiv.2507.04991}
 }
 
 @misc{doehring2025pairedRepro,

@@ -21,12 +21,12 @@
 # not tracked and has to be downloaded from
 # https://raw.githubusercontent.com/DanielDoehring/paper-2025-perrk/2aa58313108d33887b1e87ced393cd32fd4731d5/5_Applications/5_4_ONERA_M6/ONERA_M6_sanitized.inp
 [mesh_onera_m6_wing]
-git-tree-sha1 = "170b8690d6fc2c0f675ece30c7c159e6a4e79096"
+git-tree-sha1 = "d3d8c4fe05d2f917446cae7e9900ac4586883e19"
 lazy = true
 
     [[mesh_onera_m6_wing.download]]
-    sha256 = "2af2980e901988148ea01b2a3ae9a9a3f3db5c0e7c506048fabd269b80fb4a2e"
-    url = "https://github.com/trixi-framework/TrixiData.jl/releases/download/data-mesh_onera_m6_wing/mesh_onera_m6_wing.tar.gz"
+    sha256 = "94454f5a9616e037d96ab4c38ae2ddaaddde459cf1b9067cb07358e8415d076b"
+    url = "https://github.com/trixi-framework/TrixiData.jl/releases/download/data-mesh_onera_m6_wing_fixed/mesh_onera_m6_wing.tar.gz"
 
 # Mesh of two tandem spheres, discretized with quadratic (P2) hexahedral
 # elements; see `mesh_tandem_spheres_hex_p2` in src/TrixiData.jl.
