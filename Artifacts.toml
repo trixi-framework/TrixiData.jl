@@ -1,3 +1,33 @@
+# The data sets are listed in alphabetical order.
+
+# Sanitized mesh of the ONERA M6 wing, discretized with straight-sided
+# hexahedral elements; see `mesh_onera_m6_wing` in src/TrixiData.jl.
+#
+# Original data set (MIT license):
+#   Daniel Doehring, Hendrik Ranocha, Manuel Torrilhon: Reproducibility
+#   repository for "Paired Explicit Relaxation Runge-Kutta Methods".
+#   Zenodo, 2025. https://doi.org/10.5281/zenodo.15601890
+#   https://github.com/DanielDoehring/paper-2025-perrk
+#   commit 2aa58313108d33887b1e87ced393cd32fd4731d5
+# Julia artifacts can only be downloaded as (compressed) tarballs, while the
+# repository serves bare files. Hence, the mesh file is repackaged as a
+# `.tar.gz` archive - together with the license and a `README.md` describing the
+# mesh - and attached to a GitHub release of TrixiData.jl; the tarball can be
+# recreated bit-for-bit via
+#   julia> using Tar; Tar.create(dir, "mesh_onera_m6_wing.tar")
+#   $ gzip -9 -n mesh_onera_m6_wing.tar
+# where `dir` is data/mesh_onera_m6_wing/ of this repository. It contains the
+# tracked files LICENSE and README.md as well as the mesh file itself, which is
+# not tracked and has to be downloaded from
+# https://raw.githubusercontent.com/DanielDoehring/paper-2025-perrk/2aa58313108d33887b1e87ced393cd32fd4731d5/5_Applications/5_4_ONERA_M6/ONERA_M6_sanitized.inp
+[mesh_onera_m6_wing]
+git-tree-sha1 = "d3d8c4fe05d2f917446cae7e9900ac4586883e19"
+lazy = true
+
+    [[mesh_onera_m6_wing.download]]
+    sha256 = "94454f5a9616e037d96ab4c38ae2ddaaddde459cf1b9067cb07358e8415d076b"
+    url = "https://github.com/trixi-framework/TrixiData.jl/releases/download/data-mesh_onera_m6_wing_fixed/mesh_onera_m6_wing.tar.gz"
+
 # Mesh of two tandem spheres, discretized with quadratic (P2) hexahedral
 # elements; see `mesh_tandem_spheres_hex_p2` in src/TrixiData.jl.
 #
