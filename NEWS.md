@@ -28,3 +28,8 @@ accessor function - or removing such a function - is a breaking change.
   The mesh is distributed as a lazy artifact and is taken from
   [DOI: 10.5281/zenodo.18921889](https://doi.org/10.5281/zenodo.18921889)
   (Daniel Doehring, CC BY 4.0).
+- `mesh_onera_m6_wing` returns the path to a sanitized mesh of the ONERA M6
+  wing in Abaqus format, consisting of 294,838 straight-sided hexahedral
+  elements. The mesh is distributed as a lazy artifact and is taken from
+  [DOI: 10.5281/zenodo.15601890](https://doi.org/10.5281/zenodo.15601890)
+  (Daniel Doehring, Hendrik Ranocha, Manuel Torrilhon, MIT license).
