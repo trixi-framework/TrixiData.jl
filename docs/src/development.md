@@ -47,11 +47,51 @@ Only add data that may be redistributed. Record
 - its license,
 - and every modification that was applied to the original data.
 
-All of this goes into the docstring of the accessor function (step 5). Data
+All of this goes into the docstring of the accessor function (step 6). Data
 files keep the license of their source, which is usually *not* the MIT license
 of the TrixiData.jl source code.
 
-### 2. Create a reproducible tarball
+### 2. Collect the files that create the data set
+
+A data set should ideally be distributed together with everything needed to
+create it, not only as the artifact itself. Collect those files in
+`data/<artifact name>/` - see `data/mesh_gingerbread_man` for a worked example.
+Someone who wants to check a mesh, adapt it, or create a similar one then does
+not have to reconstruct the setup from scratch, and the data set stays
+reproducible even when the tools that produced it move on.
+
+Such a directory contains
+
+- a `README.md` that states what the data set is, how to run the setup, which
+  Julia version and which external tools are required, and what result to
+  expect,
+- the input files, such as the control file of a mesh generator, kept as close
+  to their origin as possible,
+- a Julia environment, i.e., a `Project.toml` with exact `[compat]` bounds. Track
+  the `Manifest.toml` as well, even though `**/Manifest.toml` is ignored
+  repository wide: add it with `git add -f`, so that the environment can be
+  instantiated exactly as it was when the data set was created,
+- a script that runs the whole thing, checks its result against the
+  distributed file, and fails if they do not match,
+- and a `LICENSE`/`LICENSE.md` that states the license of the original data and
+  of any modifications applied to it.
+
+Keep the directory free of generated output: data files are ignored repository
+wide and are distributed as artifacts, and downloads, build products, and other
+scratch space belong in a subdirectory `run*/`, which is ignored as well.
+
+Sometimes the data set cannot be recreated byte for byte - floating point output
+usually depends on the compiler and the machine that produced it. The published
+file then stays the one that is distributed, and the directory serves to verify
+it and to document where it comes from.
+
+Not every data set can be shipped this way; data published by others usually
+cannot be recreated at all. The directory is still worth having, since an
+artifact may contain more than the data itself: typically the license of the
+source and a `README.md` that describes the data set and names the sources to
+cite - see `data/mesh_onera_m6_wing` for a worked example.
+
+### 3. Create a reproducible tarball
 
 Use `Tar.create` from [Tar.jl](https://github.com/JuliaIO/Tar.jl) together with
 `gzip -9 -n`. `Tar.create` normalizes permissions, timestamps, and ownership,
@@ -83,17 +123,17 @@ println("sha256        = ", bytes2hex(open(sha256, tarball * ".gz")))
 println("tarball       = ", tarball * ".gz")
 ```
 
-Keep the two printed hashes; they go into `Artifacts.toml` in step 4.
+Keep the two printed hashes; they go into `Artifacts.toml` in step 5.
 
-An artifact may contain more than the data itself, for example the license of
-the source and a `README.md` describing the data set and naming the sources to
-cite. Everything that goes into an artifact is collected in
-`data/<artifact name>/` of this repository. The small accompanying files are
-tracked there, so that the tarball can be recreated; the data files themselves
-are not, since they are downloaded from their original source and would only
-bloat the repository (see the corresponding patterns in `.gitignore`).
+Whatever is inside `tree` becomes the content of the artifact. If the data set
+has a directory in `data/`, pack that one instead of a temporary directory, so
+that the accompanying files collected in step 2 are shipped along with the data.
+It contains the data files themselves as well; those are not tracked in the
+repository, since they are downloaded or regenerated and would only bloat it
+(see the corresponding patterns in `.gitignore`). Make sure that no scratch
+space such as `run*/` is left in it.
 
-### 3. Publish the tarball as a GitHub release asset
+### 4. Publish the tarball as a GitHub release asset
 
 Attach the `.tar.gz` to a release of TrixiData.jl. Use a tag of the form
 `data-<artifact name>` so that data releases are clearly separated from the
@@ -112,9 +152,9 @@ Never replace the asset of an existing data release. The `sha256` recorded in
 artifact would keep the old content. If a data set has to change, add a new one
 instead, see [Changing or removing a data set](@ref).
 
-### 4. Declare the artifact in `Artifacts.toml`
+### 5. Declare the artifact in `Artifacts.toml`
 
-Add an entry with the two hashes from step 2 and the download URL from step 3.
+Add an entry with the two hashes from step 3 and the download URL from step 4.
 Setting `lazy = true` is essential - without it, the data would be downloaded
 whenever TrixiData.jl is installed.
 
@@ -132,7 +172,7 @@ Add a comment above the entry that names the original source, its license, and
 how the tarball was created, so that the archive can be reproduced from
 `Artifacts.toml` alone.
 
-### 5. Add the accessor function
+### 6. Add the accessor function
 
 Add a function returning the path to the file in `src/TrixiData.jl` and export
 it. Since `@artifact_str` returns the path of the artifact *directory*, join it
@@ -179,7 +219,7 @@ Two properties of the module must be preserved:
   precompiled, and `Artifacts.toml` is registered as an include dependency.
   Editing `Artifacts.toml` therefore triggers recompilation automatically.
 
-### 6. Add a test
+### 7. Add a test
 
 Add a `@testitem` tagged `:artifacts` that downloads the data set and checks its
 content against the checksum of the *original* file - not of the tarball. This
@@ -207,7 +247,7 @@ To run only the tests that do not need network access, set
 `TRIXIDATA_TEST=quality`; `TRIXIDATA_TEST=artifacts` runs only the data set
 tests.
 
-### 7. Update `NEWS.md`
+### 8. Update `NEWS.md`
 
 Add an entry under `#### Added` of the current
 `## Changes in the vX.Y lifecycle` section that names the new function and the
