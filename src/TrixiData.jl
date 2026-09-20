@@ -98,13 +98,10 @@ meters (a scaling by exactly 0.0254), and the result was written in Abaqus
 format. The element and boundary structure of the original mesh - including the
 names of the seven boundary sets - is preserved. The resulting mesh is
 published as `5_Applications/5_5_CommonResearchModel/crm_q3_lin_relabel_m.inp`
-in the reproducibility repository [5] of the article [4], and - under the name
-`CRM_HIOCFD_2015_meters.inp` used here - in the Gist
-<https://gist.github.com/DanielDoehring/fbc9d785909263ffec76983c4d520fe3> from
-which the example `elixir_navierstokes_crm.jl` of Trixi.jl downloads it. The
-two files differ only in the comment of the `*Heading` line, which names the
-origin of the mesh in the version distributed here and a local path in the
-version published in [5]; the mesh itself is byte-for-byte identical.
+in the reproducibility repository [5] of the article [4]. The file distributed
+here differs only in the comment of the `*Heading` line, which names the origin
+of the mesh in the version distributed here; the mesh itself is byte-for-byte
+identical.
 
 # How to cite
 
@@ -203,14 +200,11 @@ The corresponding BibLaTeX entries are
 
 # Source and license
 
-The mesh file `CRM_HIOCFD_2015_meters.inp` is redistributed unmodified from the
-Gist <https://gist.github.com/DanielDoehring/fbc9d785909263ffec76983c4d520fe3>
-(revision `68741ba6c6965b2045af04323bf73df9dab6ed6d`). Both that Gist and the
-reproducibility repository [5], <https://github.com/DanielDoehring/paper-2025-perrk>
-(commit `2aa58313108d33887b1e87ced393cd32fd4731d5`), in which the same mesh is
-published, are by Daniel Doehring; the repository places it under the MIT
-license - like the source code of TrixiData.jl, but with a different copyright
-holder. The license text is included in the artifact as `LICENSE`.
+The mesh file is redistributed (modifying only the comment of the `*Heading` line)
+from the reproducibility repository [5],
+<https://github.com/DanielDoehring/paper-2025-perrk>, where it is published under
+the MIT license - like the source code of TrixiData.jl, but with a different
+copyright holder. The license text is included in the artifact as `LICENSE`.
 
 Since Julia artifacts must be downloadable as (compressed) tarballs while the
 Gist serves the bare file, TrixiData.jl distributes the mesh file repackaged as

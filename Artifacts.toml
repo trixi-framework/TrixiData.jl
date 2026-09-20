@@ -3,13 +3,7 @@
 # Mesh of the NASA Common Research Model (CRM) in its wing-body configuration,
 # discretized with straight-sided hexahedral elements; see `mesh_nasa_crm_hex_p1`
 # in src/TrixiData.jl.
-#
-# Original data set (single file `CRM_HIOCFD_2015_meters.inp`, MIT license):
-#   Daniel Doehring: Gist
-#   https://gist.github.com/DanielDoehring/fbc9d785909263ffec76983c4d520fe3
-#   revision 68741ba6c6965b2045af04323bf73df9dab6ed6d
-# This is the file used by `examples/p4est_3d_dgsem/elixir_navierstokes_crm.jl`
-# of Trixi.jl. Apart from the comment in the `*Heading` line, it is identical to
+# Apart from the comment in the `*Heading` line, it is identical to
 # `5_Applications/5_5_CommonResearchModel/crm_q3_lin_relabel_m.inp` of
 #   Daniel Doehring, Hendrik Ranocha, Manuel Torrilhon: Reproducibility
 #   repository for "Paired Explicit Relaxation Runge-Kutta Methods".
@@ -17,11 +11,10 @@
 #   https://github.com/DanielDoehring/paper-2025-perrk
 #   commit 2aa58313108d33887b1e87ced393cd32fd4731d5
 # which is the citable source of the mesh and provides its MIT license.
-# Julia artifacts can only be downloaded as (compressed) tarballs, while the
-# Gist serves the bare file. Hence, the mesh file is repackaged as a `.tar.gz`
-# archive - together with the license and a `README.md` describing the mesh -
-# and attached to a GitHub release of TrixiData.jl; the tarball can be recreated
-# bit-for-bit via
+# Julia artifacts can only be downloaded as (compressed) tarballs. Hence, the
+# mesh file is repackaged as a `.tar.gz` archive - together with the license
+# and a `README.md` describing the mesh - and attached to a GitHub release of
+# TrixiData.jl; the tarball can be recreated bit-for-bit via
 #   julia> using Tar; Tar.create(dir, "mesh_nasa_crm_hex_p1.tar")
 #   $ gzip -9 -n mesh_nasa_crm_hex_p1.tar
 # where `dir` is data/mesh_nasa_crm_hex_p1/ of this repository. It contains the
