@@ -1,5 +1,24 @@
 # The data sets are listed in alphabetical order.
 
+@testitem "mesh_nasa_crm_hex_p1" tags=[:artifacts] begin
+    using SHA: sha256
+
+    mesh_file = mesh_nasa_crm_hex_p1()
+
+    @test isfile(mesh_file)
+    @test basename(mesh_file) == "CRM_HIOCFD_2015_meters.inp"
+    # Make sure we got exactly the file published in the Gist
+    # https://gist.github.com/DanielDoehring/fbc9d785909263ffec76983c4d520fe3
+    @test bytes2hex(open(sha256, mesh_file)) ==
+          "b9a01370a116c5e06f1baa570e51c94c86f32e29f4c62ccea3bf39d974c463f3"
+
+    # The artifact contains the license of the mesh and a `README.md`
+    # describing it, too
+    artifact_dir = dirname(mesh_file)
+    @test isfile(joinpath(artifact_dir, "LICENSE"))
+    @test isfile(joinpath(artifact_dir, "README.md"))
+end
+
 @testitem "mesh_onera_m6_wing" tags=[:artifacts] begin
     using SHA: sha256
 
