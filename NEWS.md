@@ -33,3 +33,8 @@ accessor function - or removing such a function - is a breaking change.
   elements. The mesh is distributed as a lazy artifact and is taken from
   [DOI: 10.5281/zenodo.15601890](https://doi.org/10.5281/zenodo.15601890)
   (Daniel Doehring, Hendrik Ranocha, Manuel Torrilhon, MIT license).
+- `mesh_nasa_crm_hex_p1` returns the path to a mesh of the NASA Common
+  Research Model (CRM) in Abaqus format, consisting of 79,505 straight-sided
+  hexahedral elements. The mesh is distributed as a lazy artifact and is taken
+  from [DOI: 10.5281/zenodo.15601890](https://doi.org/10.5281/zenodo.15601890)
+  (Daniel Doehring, Hendrik Ranocha, Manuel Torrilhon, MIT license).
