@@ -1,0 +1,2 @@
+[default.extend-words]
+mak = "mak" # used for some makefiles
