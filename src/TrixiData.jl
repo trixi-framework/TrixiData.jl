@@ -14,15 +14,15 @@ export mesh_nasa_crm_hex_p1
 export mesh_onera_m6_wing
 export mesh_tandem_spheres_hex_p2
 
-"""
+@doc raw"""
     mesh_gingerbread_man()
 
 Return the path to a two-dimensional mesh of a gingerbread man. It is the
 example `GingerbreadMan` of the mesh generator
-[HOHQMesh](https://github.com/trixi-framework/HOHQMesh) and is mostly used to
-demonstrate and test curved unstructured meshes: the outer boundary `Body` is a
-spline, the inner boundaries `Button1`, `Button2`, `Eye1`, `Eye2`, `Smile`, and
-`Bowtie` are given by parametric equations.
+[HOHQMesh](https://github.com/trixi-framework/HOHQMesh) [1] and is mostly used
+to demonstrate and test curved unstructured meshes: the outer boundary `Body`
+is a spline, the inner boundaries `Button1`, `Button2`, `Eye1`, `Eye2`,
+`Smile`, and `Bowtie` are given by parametric equations.
 
 The mesh is given in HOHQMesh's ISM-V2 format (`.mesh`) and consists of 1,067
 nodes, 1,973 edges, and 903 curved quadrilateral elements with boundary curves
@@ -82,27 +82,58 @@ julia> sort(readdir(dirname(mesh_gingerbread_man())))
 `README.md` documents how the mesh is recreated and how far a regenerated mesh
 is from the distributed one.
 
+# Origin
+
+The mesh is the output of the mesh generator HOHQMesh [1] applied to the
+control file of its example `GingerbreadMan`, which is also shipped with
+[HOHQMesh.jl](https://github.com/trixi-framework/HOHQMesh.jl). Andrew R.
+Winters published the resulting mesh file as a Gist
+<https://gist.github.com/andrewwinters5000/2c6440b5f8a57db131061ad7aa78ee2b>;
+the file distributed here is that one, byte-for-byte.
+
+# How to cite
+
+When you use this mesh, please cite the source that it builds upon:
+
+1. D. A. Kopriva, A. R. Winters, M. Schlottke-Lakemper, J. A. Schoonover,
+   H. Ranocha (2024).
+   HOHQMesh: An All Quadrilateral/Hexahedral Unstructured Mesh Generator for
+   High Order Elements.
+   Journal of Open Source Software 9(104), 7476.
+   [DOI: 10.21105/joss.07476](https://doi.org/10.21105/joss.07476)
+
+The corresponding BibLaTeX entries is
+
+```bibtex
+@article{kopriva2024hohqmesh,
+  title={{HOHQM}esh: An All Quadrilateral/Hexahedral Unstructured Mesh
+         Generator for High Order Elements},
+  author={Kopriva, David A. and Winters, Andrew R. and
+          Schlottke-Lakemper, Michael and Schoonover, Joseph A. and
+          Ranocha, Hendrik},
+  journal={Journal of Open Source Software},
+  volume={9},
+  number={104},
+  pages={7476},
+  year={2024},
+  doi={10.21105/joss.07476}
+}
+```
+
 # Source and license
 
 The mesh file `mesh_gingerbread_man.mesh` is redistributed unmodified from
+<https://gist.github.com/andrewwinters5000/2c6440b5f8a57db131061ad7aa78ee2b>.
+Both the mesh generator that produced it and the control file of the example
+`GingerbreadMan` are licensed under the MIT license (Copyright (c) 2010-present
+David A. Kopriva and other contributors) - like the source code of TrixiData.jl,
+but with a different copyright holder. The license text is included in the
+artifact as `LICENSE.md`.
 
-> Andrew R. Winters (2021).
-> Gingerbread man mesh.
-> [Gist](https://gist.github.com/andrewwinters5000/2c6440b5f8a57db131061ad7aa78ee2b)
-
-It is the output of HOHQMesh applied to the control file of the example
-`GingerbreadMan` shipped with
-[HOHQMesh.jl](https://github.com/trixi-framework/HOHQMesh.jl). Both the mesh
-generator and that control file are licensed under the MIT license (Copyright
-(c) 2010-present David A. Kopriva and other contributors); a copy of the license
-is distributed with the mesh as `LICENSE.md`. If you use this mesh, please cite
-
-> David A. Kopriva, Andrew R. Winters, Michael Schlottke-Lakemper,
-> Joseph A. Schoonover, Hendrik Ranocha (2024).
-> HOHQMesh: An All Quadrilateral/Hexahedral Unstructured Mesh Generator for High
-> Order Elements.
-> Journal of Open Source Software 9(104), 7476.
-> [DOI: 10.21105/joss.07476](https://doi.org/10.21105/joss.07476)
+Since Julia artifacts must be downloadable as (compressed) tarballs while the
+Gist serves the bare file, TrixiData.jl distributes the mesh file repackaged as
+a `.tar.gz` archive, together with the license and the files that recreate it;
+see `Artifacts.toml`.
 """
 function mesh_gingerbread_man()
     return joinpath(artifact"mesh_gingerbread_man", "mesh_gingerbread_man.mesh")

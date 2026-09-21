@@ -12,12 +12,11 @@
 # (Copyright (c) 2010-present David A. Kopriva and other contributors), a copy
 # of which is part of the artifact as `LICENSE.md`.
 #
-# In contrast to the other data sets, the artifact does not only contain the
-# mesh file but also everything needed to recreate it: the control file, a Julia
-# environment, and a script that regenerates the mesh and verifies it against
-# the distributed file. These are the files of data/mesh_gingerbread_man in the
-# repository of TrixiData.jl; see their README.md. The tarball can be recreated
-# bit-for-bit via
+# The artifact does not only contain the mesh file but also everything needed
+# to recreate it: the control file, a Julia environment, and a script that
+# regenerates the mesh and verifies it against the distributed file. These are
+# the files of data/mesh_gingerbread_man in the repository of TrixiData.jl; see
+# their README.md. The tarball can be recreated bit-for-bit via
 #   julia> using Tar; Tar.create(dir, "mesh_gingerbread_man.tar")
 #   $ gzip -9 -n mesh_gingerbread_man.tar
 # where `dir` contains those files and nothing else - in particular not the
