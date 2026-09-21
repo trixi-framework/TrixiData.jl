@@ -4,6 +4,8 @@ docs/src/index.md
 docs/src/authors.md
 docs/src/changelog.md
 docs/src/license.md
+docs/src/contributing.md
+docs/src/code_of_conduct.md
 public/
 coverage/
 coverage_report/
