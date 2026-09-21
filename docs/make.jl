@@ -59,6 +59,14 @@ copy_file("AUTHORS.md",
 copy_file("LICENSE.md",
           "[AUTHORS.md](AUTHORS.md)" => "[Authors](@ref)",
           "\n" => "\n> ", r"^" => "# License\n\n> ")
+copy_file("CONTRIBUTING.md",
+          "[LICENSE.md](LICENSE.md)" => "[License](@ref)",
+          "[AUTHORS.md](AUTHORS.md)" => "[Authors](@ref)")
+# Add section `# Code of Conduct` and add `>` in each line to add a quote
+copy_file("CODE_OF_CONDUCT.md",
+          "[AUTHORS.md](AUTHORS.md)" => "[Authors](@ref)",
+          "\n" => "\n> ",
+          r"^" => "# [Code of Conduct](@id code-of-conduct)\n\n> ")
 
 # Create changelog
 Changelog.generate(Changelog.Documenter(),                        # output type
@@ -98,6 +106,8 @@ makedocs(modules = [TrixiData],
              "Development" => "development.md",
              "Changelog" => "changelog.md",
              "Authors" => "authors.md",
+             "Contributing" => "contributing.md",
+             "Code of Conduct" => "code_of_conduct.md",
              "License" => "license.md"
          ])
 
