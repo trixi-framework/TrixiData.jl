@@ -102,21 +102,21 @@ When you use this mesh, please cite the source that it builds upon:
    Journal of Open Source Software 9(104), 7476.
    [DOI: 10.21105/joss.07476](https://doi.org/10.21105/joss.07476)
 
-The corresponding BibLaTeX entries is
+The corresponding BibLaTeX entry is
 
 ```bibtex
-@article{kopriva2024hohqmesh,
-  title={{HOHQM}esh: An All Quadrilateral/Hexahedral Unstructured Mesh
-         Generator for High Order Elements},
-  author={Kopriva, David A. and Winters, Andrew R. and
-          Schlottke-Lakemper, Michael and Schoonover, Joseph A. and
-          Ranocha, Hendrik},
+@article{kopriva2024hohqmesh:joss,
+  title={{HOHQM}esh: An All Quadrilateral/Hexahedral Unstructured Mesh Generator
+         for High Order Elements},
+  author={David A. Kopriva and Andrew R. Winters and Michael Schlottke-Lakemper
+          and Joseph A. Schoonover and Hendrik Ranocha},
+  year={2024},
   journal={Journal of Open Source Software},
+  doi={10.21105/joss.07476},
   volume={9},
   number={104},
   pages={7476},
-  year={2024},
-  doi={10.21105/joss.07476}
+  publisher={The Open Journal}
 }
 ```
 
@@ -124,11 +124,10 @@ The corresponding BibLaTeX entries is
 
 The mesh file `mesh_gingerbread_man.mesh` is redistributed unmodified from
 <https://gist.github.com/andrewwinters5000/2c6440b5f8a57db131061ad7aa78ee2b>.
-Both the mesh generator that produced it and the control file of the example
-`GingerbreadMan` are licensed under the MIT license (Copyright (c) 2010-present
-David A. Kopriva and other contributors) - like the source code of TrixiData.jl,
-but with a different copyright holder. The license text is included in the
-artifact as `LICENSE.md`.
+The mesh and its control file are licensed under the MIT license (Copyright (c)
+2010-present David A. Kopriva and other contributors) - like the source code of
+TrixiData.jl, but with a different copyright holder. The license text is
+included in the artifact as `LICENSE.md`.
 
 Since Julia artifacts must be downloadable as (compressed) tarballs while the
 Gist serves the bare file, TrixiData.jl distributes the mesh file repackaged as
@@ -537,14 +536,13 @@ function mesh_onera_m6_wing()
                     "ONERA_M6_sanitized.inp")
 end
 
-"""
+@doc raw"""
     mesh_tandem_spheres_hex_p2()
 
 Return the path to a mesh file of the tandem spheres configuration: two spheres
 of diameter `D = 1` placed one behind the other in a free stream. This is the
 geometry of test case CS1 "Tandem Spheres" (Re = 3900) of the 5th International
-Workshop on High-Order CFD Methods, see
-<https://how5.cenaero.be/content/cs1-tandem-spheres-re3900>.
+Workshop on High-Order CFD Methods [1].
 
 The mesh is given in Abaqus format (`.inp`) and consists of 256,483 nodes and
 31,616 curved hexahedral elements of polynomial degree two (27-node elements of
@@ -578,38 +576,93 @@ immutable, so that `Pkg.Artifacts.verify_artifact` reports a mismatch
 afterwards; with a read-only depot it fails. Copy the mesh file to a writable
 directory first to avoid this.
 
-# Source and license
+# Origin
 
-The mesh file `TandemSpheresHexMesh1P2_fixed.inp` is redistributed unmodified
-from
+The workshop [1] provides grids for this test case, contributed by Steve Karman
+of Pointwise and Samuel James of GridPro. The mesh distributed here is derived
+from the hexahedral Pointwise grid of polynomial degree two, which is published
+in Gmsh format at
+<https://acdl.mit.edu/HOW5/CS1_TandemSpheres/pointwise/gmsh/>.
 
-> Daniel Doehring (2026).
-> Mesh Tandem Spheres Hexahedra P2 Fixed.
-> Zenodo. [DOI: 10.5281/zenodo.18921889](https://doi.org/10.5281/zenodo.18921889)
-
-It is licensed under the Creative Commons Attribution 4.0 International license
-([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)) - in contrast to the
-source code of TrixiData.jl, which is licensed under the MIT license. Please
-attribute the source above when you use this mesh.
-
-That data set is in turn derived from the Pointwise mesh published for the
-workshop case at
-<https://acdl.mit.edu/HOW5/CS1_TandemSpheres/pointwise/gmsh/>. Two changes were
-applied to the original Gmsh mesh: the block
+Daniel Doehring applied two changes to that grid: the block
 
 ```
-\$PhysicalNames
+$PhysicalNames
 4
 2 2 "BackSphere"
 2 3 "FarField"
 2 4 "FrontSphere"
 3 1 "Fluid"
-\$EndPhysicalNames
+$EndPhysicalNames
 ```
 
 was added to the `.msh` file to name the two spheres, the far field boundary,
 and the fluid volume, and the result was converted to the Abaqus `.inp` format
-using Gmsh.
+using Gmsh [2]. The resulting mesh is published on Zenodo [3]; the file
+distributed here is that one, byte-for-byte.
+
+# How to cite
+
+When you use this mesh, please cite all the sources that it builds upon:
+
+1. R. Glasby, S. Wood, K. Holst (2018).
+   CS1: Tandem spheres (Re = 3900).
+   Test case of the 5th International Workshop on High-Order CFD Methods
+   (HiOCFD5), 6-7 January 2018.
+   <https://how5.cenaero.be/content/cs1-tandem-spheres-re3900>
+2. C. Geuzaine, J.-F. Remacle (2009).
+   Gmsh: A 3-D finite element mesh generator with built-in pre- and
+   post-processing facilities.
+   International Journal for Numerical Methods in Engineering 79, pp. 1309-1331.
+   [DOI: 10.1002/nme.2579](https://doi.org/10.1002/nme.2579)
+3. D. Doehring (2026).
+   Mesh Tandem Spheres Hexahedra P2 Fixed.
+   Zenodo.
+   [DOI: 10.5281/zenodo.18921889](https://doi.org/10.5281/zenodo.18921889)
+
+The corresponding BibLaTeX entries are
+
+```bibtex
+@misc{glasby2018tandem,
+  title={{CS1}: Tandem Spheres ({R}e = 3900)},
+  author={Glasby, Ryan and Wood, Stephen and Holst, Kevin},
+  year={2018},
+  month={01},
+  howpublished={\url{https://how5.cenaero.be/content/cs1-tandem-spheres-re3900}},
+  note={Test case of the 5th International Workshop on High-Order {CFD}
+        Methods ({H}i{OCFD}5), 6--7 January 2018}
+}
+
+@article{geuzaine2009gmsh,
+  title={{G}msh: A 3-{D} finite element mesh generator with built-in
+         pre- and post-processing facilities},
+  author={Geuzaine, Christophe and Remacle, Jean-François},
+  journal={International Journal for Numerical Methods in Engineering},
+  volume={79},
+  number={11},
+  pages={1309--1331},
+  year={2009},
+  doi={10.1002/nme.2579}
+}
+
+@misc{doehring2026mesh,
+  title={Mesh Tandem Spheres Hexahedra {P2} Fixed},
+  author={Doehring, Daniel},
+  year={2026},
+  month={03},
+  publisher={Zenodo},
+  doi={10.5281/zenodo.18921889}
+}
+```
+
+# Source and license
+
+The mesh file `TandemSpheresHexMesh1P2_fixed.inp` is redistributed unmodified
+from the Zenodo record [3], where it is licensed under the Creative Commons
+Attribution 4.0 International license
+([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)) - in contrast to the
+source code of TrixiData.jl, which is licensed under the MIT license. Please
+attribute the source above when you use this mesh.
 
 Since Julia artifacts must be downloadable as (compressed) tarballs while Zenodo
 serves the bare mesh file, TrixiData.jl distributes the unmodified file
