@@ -126,12 +126,40 @@ println("tarball       = ", tarball * ".gz")
 Keep the two printed hashes; they go into `Artifacts.toml` in step 5.
 
 Whatever is inside `tree` becomes the content of the artifact. If the data set
-has a directory in `data/`, pack that one instead of a temporary directory, so
-that the accompanying files collected in step 2 are shipped along with the data.
-It contains the data files themselves as well; those are not tracked in the
-repository, since they are downloaded or regenerated and would only bloat it
-(see the corresponding patterns in `.gitignore`). Make sure that no scratch
-space such as `run*/` is left in it.
+has a directory in `data/`, the files of that directory become the content of
+the artifact, so that everything collected in step 2 is shipped along with the
+data. That directory contains the data files themselves as well; those are not
+tracked in the repository, since they are downloaded or regenerated and would
+only bloat it (see the corresponding patterns in `.gitignore`), so run the
+script of that directory first to recreate them. Make sure that no scratch
+space such as `run*/` ends up in the archive, for example by copying only the
+files as in the following snippet, which is run from the root of the
+repository.
+
+```julia
+using Tar: Tar
+using SHA: sha256
+
+name = "mesh_gingerbread_man"
+
+# Everything inside `tree` becomes the content of the artifact
+dir = mktempdir()
+tree = mkpath(joinpath(dir, "tree"))
+for file in readdir(joinpath("data", name))
+    path = joinpath("data", name, file)
+    isfile(path) || continue    # skip the scratch directory `run`
+    cp(path, joinpath(tree, file))
+end
+
+# Pack it as above
+tarball = joinpath(dir, name * ".tar")
+Tar.create(tree, tarball)
+println("git-tree-sha1 = ", Tar.tree_hash(tarball))
+
+run(`gzip -9 -n $tarball`)
+println("sha256        = ", bytes2hex(open(sha256, tarball * ".gz")))
+println("tarball       = ", tarball * ".gz")
+```
 
 ### 4. Publish the tarball as a GitHub release asset
 

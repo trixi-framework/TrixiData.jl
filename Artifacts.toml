@@ -1,5 +1,34 @@
 # The data sets are listed in alphabetical order.
 
+# Two-dimensional mesh of a gingerbread man, generated with HOHQMesh; see
+# `mesh_gingerbread_man` in src/TrixiData.jl.
+#
+# Original data set (single file `mesh_gingerbread_man.mesh`):
+#   Andrew R. Winters: Gingerbread man mesh.
+#   Gist, 2021.
+#   https://gist.github.com/andrewwinters5000/2c6440b5f8a57db131061ad7aa78ee2b
+# It is the output of the HOHQMesh mesh generator applied to the example
+# `GingerbreadMan` of HOHQMesh; both are licensed under the MIT license
+# (Copyright (c) 2010-present David A. Kopriva and other contributors), a copy
+# of which is part of the artifact as `LICENSE.md`.
+#
+# The artifact does not only contain the mesh file but also everything needed
+# to recreate it: the control file, a Julia environment, and a script that
+# regenerates the mesh and verifies it against the distributed file. These are
+# the files of data/mesh_gingerbread_man in the repository of TrixiData.jl; see
+# their README.md. The tarball can be recreated bit-for-bit via
+#   julia> using Tar; Tar.create(dir, "mesh_gingerbread_man.tar")
+#   $ gzip -9 -n mesh_gingerbread_man.tar
+# where `dir` contains those files and nothing else - in particular not the
+# subdirectory `run` created by the script.
+[mesh_gingerbread_man]
+git-tree-sha1 = "044f6362400ed617f7ae698798488fa286b1c7a6"
+lazy = true
+
+    [[mesh_gingerbread_man.download]]
+    sha256 = "46840b6e21d74cc286a89831b17df0ab68cef570a05157820c3806b058206a99"
+    url = "https://github.com/trixi-framework/TrixiData.jl/releases/download/data-mesh_gingerbread_man/mesh_gingerbread_man.tar.gz"
+
 # Mesh of the NASA Common Research Model (CRM) in its wing-body configuration,
 # discretized with straight-sided hexahedral elements; see `mesh_nasa_crm_hex_p1`
 # in src/TrixiData.jl.

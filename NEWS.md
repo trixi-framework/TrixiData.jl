@@ -38,3 +38,10 @@ accessor function - or removing such a function - is a breaking change.
   hexahedral elements. The mesh is distributed as a lazy artifact and is taken
   from [DOI: 10.5281/zenodo.15601890](https://doi.org/10.5281/zenodo.15601890)
   (Daniel Doehring, Hendrik Ranocha, Manuel Torrilhon, MIT license).
+- `mesh_gingerbread_man` returns the path to a two-dimensional mesh of a
+  gingerbread man in HOHQMesh's ISM-V2 format, consisting of 903 curved
+  quadrilateral elements with boundary curves of polynomial degree six.
+  The mesh is distributed as a lazy artifact and is taken from
+  [this gist](https://gist.github.com/andrewwinters5000/2c6440b5f8a57db131061ad7aa78ee2b)
+  (Andrew R. Winters, MIT). Its artifact also contains the control file, a Julia
+  environment, and a script to recreate the mesh.
