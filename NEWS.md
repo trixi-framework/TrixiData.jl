@@ -22,6 +22,22 @@ accessor function - or removing such a function - is a breaking change.
 
 #### Added
 
+- `mesh_tandem_spheres_hex_p2` returns the path to a mesh of the tandem spheres
+  configuration (case CS1 of the High-Order CFD Workshop) in Abaqus format,
+  consisting of 31,616 curved hexahedral elements of polynomial degree two.
+  The mesh is distributed as a lazy artifact and is taken from
+  [DOI: 10.5281/zenodo.18921889](https://doi.org/10.5281/zenodo.18921889)
+  (Daniel Doehring, CC BY 4.0).
+- `mesh_onera_m6_wing` returns the path to a sanitized mesh of the ONERA M6
+  wing in Abaqus format, consisting of 294,838 straight-sided hexahedral
+  elements. The mesh is distributed as a lazy artifact and is taken from
+  [DOI: 10.5281/zenodo.15601890](https://doi.org/10.5281/zenodo.15601890)
+  (Daniel Doehring, Hendrik Ranocha, Manuel Torrilhon, MIT license).
+- `mesh_nasa_crm_hex_p1` returns the path to a mesh of the NASA Common
+  Research Model (CRM) in Abaqus format, consisting of 79,505 straight-sided
+  hexahedral elements. The mesh is distributed as a lazy artifact and is taken
+  from [DOI: 10.5281/zenodo.15601890](https://doi.org/10.5281/zenodo.15601890)
+  (Daniel Doehring, Hendrik Ranocha, Manuel Torrilhon, MIT license).
 - `mesh_gingerbread_man` returns the path to a two-dimensional mesh of a
   gingerbread man in HOHQMesh's ISM-V2 format, consisting of 903 curved
   quadrilateral elements with boundary curves of polynomial degree six.
@@ -29,9 +45,3 @@ accessor function - or removing such a function - is a breaking change.
   [this gist](https://gist.github.com/andrewwinters5000/2c6440b5f8a57db131061ad7aa78ee2b)
   (Andrew R. Winters, MIT). Its artifact also contains the control file, a Julia
   environment, and a script to recreate the mesh.
-- `mesh_tandem_spheres_hex_p2` returns the path to a mesh of the tandem spheres
-  configuration (case CS1 of the High-Order CFD Workshop) in Abaqus format,
-  consisting of 31,616 curved hexahedral elements of polynomial degree two.
-  The mesh is distributed as a lazy artifact and is taken from
-  [DOI: 10.5281/zenodo.18921889](https://doi.org/10.5281/zenodo.18921889)
-  (Daniel Doehring, CC BY 4.0).

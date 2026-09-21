@@ -1,3 +1,5 @@
+# The data sets are listed in alphabetical order.
+
 # Two-dimensional mesh of a gingerbread man, generated with HOHQMesh; see
 # `mesh_gingerbread_man` in src/TrixiData.jl.
 #
@@ -27,6 +29,63 @@ lazy = true
     [[mesh_gingerbread_man.download]]
     sha256 = "46840b6e21d74cc286a89831b17df0ab68cef570a05157820c3806b058206a99"
     url = "https://github.com/trixi-framework/TrixiData.jl/releases/download/data-mesh_gingerbread_man/mesh_gingerbread_man.tar.gz"
+
+# Mesh of the NASA Common Research Model (CRM) in its wing-body configuration,
+# discretized with straight-sided hexahedral elements; see `mesh_nasa_crm_hex_p1`
+# in src/TrixiData.jl.
+# Apart from the comment in the `*Heading` line, it is identical to
+# `5_Applications/5_5_CommonResearchModel/crm_q3_lin_relabel_m.inp` of
+#   Daniel Doehring, Hendrik Ranocha, Manuel Torrilhon: Reproducibility
+#   repository for "Paired Explicit Relaxation Runge-Kutta Methods".
+#   Zenodo, 2025. https://doi.org/10.5281/zenodo.15601890
+#   https://github.com/DanielDoehring/paper-2025-perrk
+#   commit 2aa58313108d33887b1e87ced393cd32fd4731d5
+# which is the citable source of the mesh and provides its MIT license.
+# Julia artifacts can only be downloaded as (compressed) tarballs. Hence, the
+# mesh file is repackaged as a `.tar.gz` archive - together with the license
+# and a `README.md` describing the mesh - and attached to a GitHub release of
+# TrixiData.jl; the tarball can be recreated bit-for-bit via
+#   julia> using Tar; Tar.create(dir, "mesh_nasa_crm_hex_p1.tar")
+#   $ gzip -9 -n mesh_nasa_crm_hex_p1.tar
+# where `dir` is data/mesh_nasa_crm_hex_p1/ of this repository. It contains the
+# tracked files LICENSE and README.md as well as the mesh file itself, which is
+# not tracked and has to be downloaded from
+# https://gist.githubusercontent.com/DanielDoehring/fbc9d785909263ffec76983c4d520fe3/raw/68741ba6c6965b2045af04323bf73df9dab6ed6d/CRM_HIOCFD_2015_meters.inp
+[mesh_nasa_crm_hex_p1]
+git-tree-sha1 = "6a1ab9445cbba0deab489aa18247a474bd3e1839"
+lazy = true
+
+    [[mesh_nasa_crm_hex_p1.download]]
+    sha256 = "2a651989e13153fe95f117630dd89c75ef6a0ce112753c0c93768624a3485ae4"
+    url = "https://github.com/trixi-framework/TrixiData.jl/releases/download/data-mesh_nasa_crm_hex_p1/mesh_nasa_crm_hex_p1.tar.gz"
+
+# Sanitized mesh of the ONERA M6 wing, discretized with straight-sided
+# hexahedral elements; see `mesh_onera_m6_wing` in src/TrixiData.jl.
+#
+# Original data set (MIT license):
+#   Daniel Doehring, Hendrik Ranocha, Manuel Torrilhon: Reproducibility
+#   repository for "Paired Explicit Relaxation Runge-Kutta Methods".
+#   Zenodo, 2025. https://doi.org/10.5281/zenodo.15601890
+#   https://github.com/DanielDoehring/paper-2025-perrk
+#   commit 2aa58313108d33887b1e87ced393cd32fd4731d5
+# Julia artifacts can only be downloaded as (compressed) tarballs, while the
+# repository serves bare files. Hence, the mesh file is repackaged as a
+# `.tar.gz` archive - together with the license and a `README.md` describing the
+# mesh - and attached to a GitHub release of TrixiData.jl; the tarball can be
+# recreated bit-for-bit via
+#   julia> using Tar; Tar.create(dir, "mesh_onera_m6_wing.tar")
+#   $ gzip -9 -n mesh_onera_m6_wing.tar
+# where `dir` is data/mesh_onera_m6_wing/ of this repository. It contains the
+# tracked files LICENSE and README.md as well as the mesh file itself, which is
+# not tracked and has to be downloaded from
+# https://raw.githubusercontent.com/DanielDoehring/paper-2025-perrk/2aa58313108d33887b1e87ced393cd32fd4731d5/5_Applications/5_4_ONERA_M6/ONERA_M6_sanitized.inp
+[mesh_onera_m6_wing]
+git-tree-sha1 = "d3d8c4fe05d2f917446cae7e9900ac4586883e19"
+lazy = true
+
+    [[mesh_onera_m6_wing.download]]
+    sha256 = "94454f5a9616e037d96ab4c38ae2ddaaddde459cf1b9067cb07358e8415d076b"
+    url = "https://github.com/trixi-framework/TrixiData.jl/releases/download/data-mesh_onera_m6_wing_fixed/mesh_onera_m6_wing.tar.gz"
 
 # Mesh of two tandem spheres, discretized with quadratic (P2) hexahedral
 # elements; see `mesh_tandem_spheres_hex_p2` in src/TrixiData.jl.

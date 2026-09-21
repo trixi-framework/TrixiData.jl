@@ -67,14 +67,14 @@ Such a directory contains
   expect,
 - the input files, such as the control file of a mesh generator, kept as close
   to their origin as possible,
-- a Julia environment, i.e. a `Project.toml` with exact `[compat]` bounds. Track
+- a Julia environment, i.e., a `Project.toml` with exact `[compat]` bounds. Track
   the `Manifest.toml` as well, even though `**/Manifest.toml` is ignored
   repository wide: add it with `git add -f`, so that the environment can be
   instantiated exactly as it was when the data set was created,
 - a script that runs the whole thing, checks its result against the
   distributed file, and fails if they do not match,
-- and a `LICENSE.md` that states the license of the original data and of any
-  modifications applied to it.
+- and a `LICENSE`/`LICENSE.md` that states the license of the original data and
+  of any modifications applied to it.
 
 Keep the directory free of generated output: data files are ignored repository
 wide and are distributed as artifacts, and downloads, build products, and other
@@ -86,8 +86,10 @@ file then stays the one that is distributed, and the directory serves to verify
 it and to document where it comes from.
 
 Not every data set can be shipped this way; data published by others usually
-cannot be recreated at all. Recording its origin and its license as described in
-step 1 is then all that can be done.
+cannot be recreated at all. The directory is still worth having, since an
+artifact may contain more than the data itself: typically the license of the
+source and a `README.md` that describes the data set and names the sources to
+cite - see `data/mesh_onera_m6_wing` for a worked example.
 
 ### 3. Create a reproducible tarball
 
@@ -121,12 +123,18 @@ println("sha256        = ", bytes2hex(open(sha256, tarball * ".gz")))
 println("tarball       = ", tarball * ".gz")
 ```
 
-If the data set comes with the files that create it (step 2), those files are
-the content of the artifact: pack the whole `data/<artifact name>` directory
-instead of a single downloaded file. Run the script of that directory first, so
-that the data file itself is present - it is not tracked in the repository - and
-copy only the files, so that the scratch directory `run*/` stays out of the
-archive. Run the following from the root of the repository.
+Keep the two printed hashes; they go into `Artifacts.toml` in step 5.
+
+Whatever is inside `tree` becomes the content of the artifact. If the data set
+has a directory in `data/`, the files of that directory become the content of
+the artifact, so that everything collected in step 2 is shipped along with the
+data. That directory contains the data files themselves as well; those are not
+tracked in the repository, since they are downloaded or regenerated and would
+only bloat it (see the corresponding patterns in `.gitignore`), so run the
+script of that directory first to recreate them. Make sure that no scratch
+space such as `run*/` ends up in the archive, for example by copying only the
+files as in the following snippet, which is run from the root of the
+repository.
 
 ```julia
 using Tar: Tar
@@ -152,8 +160,6 @@ run(`gzip -9 -n $tarball`)
 println("sha256        = ", bytes2hex(open(sha256, tarball * ".gz")))
 println("tarball       = ", tarball * ".gz")
 ```
-
-Keep the two printed hashes; they go into `Artifacts.toml` in step 5.
 
 ### 4. Publish the tarball as a GitHub release asset
 
@@ -222,6 +228,10 @@ end
 The docstring is the only place where users learn where a data set comes from
 and under which conditions they may use it, so please be explicit there.
 
+Data sets are listed in alphabetical order in `src/TrixiData.jl`, in
+`Artifacts.toml`, and in the tests, so insert the new one at the matching
+position instead of appending it.
+
 A docstring may contain a doctest that accesses the data set; nothing special is
 required for that. `docs/make.jl` installs every artifact declared in
 `Artifacts.toml` before `makedocs` runs, so the progress information that `Pkg`
@@ -244,7 +254,9 @@ content against the checksum of the *original* file - not of the tarball. This
 verifies the whole chain from the original publication to the accessor function.
 Test items are grouped by kind of data, so a new mesh belongs in
 `test/test_meshes.jl`; start a new file `test/test_<kind>.jl` only for a kind of
-data that does not fit into an existing one.
+data that does not fit into an existing one. If the artifact contains further
+files - for example the license of the source repository - check that they are
+there as well.
 
 ```julia
 @testitem "mesh_tandem_spheres_hex_p2" tags=[:artifacts] begin
