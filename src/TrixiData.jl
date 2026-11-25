@@ -13,6 +13,7 @@ export mesh_gingerbread_man
 export mesh_nasa_crm_hex_p1
 export mesh_onera_m6_wing
 export mesh_tandem_spheres_hex_p2
+export topography_etopo_2022_surface_60s
 
 @doc raw"""
     mesh_gingerbread_man()
@@ -671,6 +672,132 @@ repackaged as a `.tar.gz` archive; see `Artifacts.toml`.
 function mesh_tandem_spheres_hex_p2()
     return joinpath(artifact"mesh_tandem_spheres_hex_p2",
                     "TandemSpheresHexMesh1P2_fixed.inp")
+end
+
+@doc raw"""
+    topography_etopo_2022_surface_60s()
+
+Return the path to the global relief model ETOPO 2022 [1] of the NOAA National
+Centers for Environmental Information (NCEI) with a resolution of 60
+arc-seconds, i.e., one arc-minute, in its ice surface version. ETOPO 2022 is a
+seamless elevation model of the whole Earth that combines the topography of the
+land with the bathymetry of the oceans and of large lakes; it is primarily used
+for coastal hazard and tsunami modeling. The ice surface version gives the
+elevation of the top of the ice sheets of Greenland and Antarctica - at the
+South Pole, for example, 2,834 m - while the bedrock version of ETOPO 2022
+gives the elevation of the bedrock below them - 6 m at the South Pole. The two
+versions do not differ elsewhere, where they give the elevation of the bare
+earth, i.e., without vegetation and buildings.
+
+Over the oceans, the elevations are negative and give the depth of the sea
+floor. The file does not contain a land-sea mask, and the sign of the elevation
+does not separate land from sea, since some land areas such as the shore of the
+Dead Sea lie below sea level.
+
+The data are given as a single-band GeoTIFF file (`.tif`) of 21,600 x 10,800
+cells covering the whole globe from 180°W to 180°E and from 90°N to 90°S. The
+first row is the northernmost one and the first column the westernmost one. The
+grid is cell-registered: the value of the cell in column `i` and row `j` (both
+counted from one) is the elevation at longitude `-180 + (i - 1/2) / 60` and
+latitude `90 - (j - 1/2) / 60`. The elevations are given in meters as
+`Float32` values. The horizontal datum is WGS84 and the elevations refer to the
+EGM2008 geoid, which is an adequate approximation of mean sea level for most
+purposes (compound coordinate reference system EPSG:9518). The file declares a
+nodata value of -99999, which does not occur in the data. The elevations range
+from -10,752.08 m in the Tonga Trench to 8,157.36 m in the cell containing Mount
+Everest; like all extreme values, the height of Mount Everest is reduced by the
+averaging over cells of one arc-minute.
+
+The file can be read with any GeoTIFF reader, for example with
+[ArchGDAL.jl](https://github.com/yeesian/ArchGDAL.jl) as
+
+```jldoctest
+julia> using ArchGDAL, TrixiData
+
+julia> elevation = ArchGDAL.read(topography_etopo_2022_surface_60s()) do dataset
+           return ArchGDAL.read(dataset, 1)
+       end;
+
+julia> size(elevation)
+(21600, 10800)
+
+julia> lon, lat = 86.925, 27.9881; # Mount Everest
+
+julia> elevation[ceil(Int, 60 * (lon + 180)), ceil(Int, 60 * (90 - lat))]
+8157.3564f0
+```
+
+The data file is provided as a lazy Julia artifact. It is downloaded the first
+time this function is called - roughly 470 MB of download and of disk space
+once unpacked, since the GeoTIFF file is compressed internally - and cached in
+the Julia depot afterwards. Reading the whole grid requires 933 MB of memory.
+The returned path points into the read-only artifact store; copy the file
+elsewhere if you need to modify it. Next to the data file, the artifact
+directory contains the license of the data (`LICENSE.md`) and a `README.md`
+repeating the information given below.
+
+# Origin
+
+ETOPO 2022 is compiled by NCEI from a number of topographic and bathymetric
+data sets, which are listed in its user guide [2]. The model is published at a
+resolution of 15 arc-seconds; the global grids with a resolution of 30 and 60
+arc-seconds are downsampled from it. The file distributed here is published by
+NCEI as
+<https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/data/60s/60s_surface_elev_gtif/ETOPO_2022_v1_60s_N90W180_surface.tif>
+and is linked from the landing page of ETOPO 2022,
+<https://www.ncei.noaa.gov/products/etopo-global-relief-model>. It is
+distributed here byte-for-byte.
+
+# How to cite
+
+When you use these data, please cite
+
+1. NOAA National Centers for Environmental Information (2022).
+   ETOPO 2022 15 Arc-Second Global Relief Model.
+   NOAA National Centers for Environmental Information.
+   [DOI: 10.25921/fd45-gt74](https://doi.org/10.25921/fd45-gt74)
+
+This is the citation requested by NCEI for all resolutions of ETOPO 2022; NCEI
+asks to add the date on which the data were accessed. The file distributed here
+was downloaded on 2026-09-30. The data set is documented in
+
+2. NOAA National Centers for Environmental Information (2022).
+   ETOPO 2022 User Guide, revision 1.2.
+   <https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/docs/1.2%20ETOPO%202022%20User%20Guide.pdf>
+
+The corresponding BibLaTeX entry is
+
+```bibtex
+@misc{noaa2022etopo,
+  title={{ETOPO} 2022 15 Arc-Second Global Relief Model},
+  author={{NOAA National Centers for Environmental Information}},
+  year={2022},
+  publisher={NOAA National Centers for Environmental Information},
+  doi={10.25921/fd45-gt74},
+  urldate={2026-09-30}
+}
+```
+
+# Source and license
+
+The GeoTIFF file `ETOPO_2022_v1_60s_N90W180_surface.tif` is redistributed
+unmodified from NCEI. The data were produced by NOAA and are not subject to
+copyright protection in the United States; NOAA waives any potential copyright
+and related rights in these data worldwide through the Creative Commons Zero
+1.0 Universal Public Domain Dedication
+([CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/)) - in contrast
+to the source code of TrixiData.jl, which is licensed under the MIT license.
+The license statement of NCEI and the text of CC0-1.0 are included in the
+artifact as `LICENSE.md`. The data must not be used for navigation.
+
+Since Julia artifacts must be downloadable as (compressed) tarballs while NCEI
+serves the bare GeoTIFF file, TrixiData.jl distributes the unmodified file
+repackaged as a `.tar.gz` archive, together with the license and a `README.md`
+written by the authors of TrixiData.jl; see `Artifacts.toml`.
+"""
+function topography_etopo_2022_surface_60s()
+    return joinpath(artifact"topography_etopo_2022_surface_60s",
+                    "ETOPO_2022_v1_60s_N90W180_surface.tif")
 end
 
 end # module TrixiData

@@ -106,3 +106,31 @@ lazy = true
     [[mesh_tandem_spheres_hex_p2.download]]
     sha256 = "451f1410da26d79c70a63c0d8ec22f78a62549eb35e009261f4a6e6bf8763162"
     url = "https://github.com/trixi-framework/TrixiData.jl/releases/download/data-mesh_tandem_spheres_hex_p2/TandemSpheresHexMesh1P2_fixed.tar.gz"
+
+# Global relief model ETOPO 2022 in its ice surface version with a resolution of
+# 60 arc-seconds; see `topography_etopo_2022_surface_60s` in src/TrixiData.jl.
+#
+# Original data set (single file `ETOPO_2022_v1_60s_N90W180_surface.tif`,
+# CC0-1.0):
+#   NOAA National Centers for Environmental Information: ETOPO 2022 15
+#   Arc-Second Global Relief Model.
+#   NOAA NCEI, 2022. https://doi.org/10.25921/fd45-gt74
+#   https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/data/60s/60s_surface_elev_gtif/ETOPO_2022_v1_60s_N90W180_surface.tif
+# Julia artifacts can only be downloaded as (compressed) tarballs, while NCEI
+# serves the bare GeoTIFF file. Hence, the unmodified file is repackaged as a
+# `.tar.gz` archive - together with the license and a `README.md` describing the
+# data - and attached to a GitHub release of TrixiData.jl. The GeoTIFF file is
+# compressed internally, so gzip does not reduce its size any further. The
+# tarball can be recreated bit-for-bit via
+#   julia> using Tar; Tar.create(dir, "topography_etopo_2022_surface_60s.tar")
+#   $ gzip -9 -n topography_etopo_2022_surface_60s.tar
+# where `dir` is data/topography_etopo_2022_surface_60s/ of this repository. It
+# contains the tracked files LICENSE.md and README.md as well as the GeoTIFF
+# file itself, which is not tracked and has to be downloaded from the URL above.
+[topography_etopo_2022_surface_60s]
+git-tree-sha1 = "9a0f9dff4e5f3fe954c6a6828bbe4c30bff09c91"
+lazy = true
+
+    [[topography_etopo_2022_surface_60s.download]]
+    sha256 = "8b08c4e5119be0259b77e839dabc786fb0e88b6cf638b17fe48b5d3f6a069d10"
+    url = "https://github.com/trixi-framework/TrixiData.jl/releases/download/data-topography_etopo_2022_surface_60s/topography_etopo_2022_surface_60s.tar.gz"
