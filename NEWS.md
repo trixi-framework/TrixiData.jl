@@ -22,6 +22,12 @@ accessor function - or removing such a function - is a breaking change.
 
 #### Added
 
+- `topography_etopo_2022_surface_60s` returns the path to the global relief
+  model ETOPO 2022 of NOAA NCEI in its ice surface version with a resolution
+  of 60 arc-seconds, given as a GeoTIFF file of 21,600 x 10,800 cells. The data are
+  distributed as a lazy artifact and are taken from
+  [DOI: 10.25921/fd45-gt74](https://doi.org/10.25921/fd45-gt74)
+  (NOAA National Centers for Environmental Information, CC0-1.0).
 - `mesh_tandem_spheres_hex_p2` returns the path to a mesh of the tandem spheres
   configuration (case CS1 of the High-Order CFD Workshop) in Abaqus format,
   consisting of 31,616 curved hexahedral elements of polynomial degree two.
